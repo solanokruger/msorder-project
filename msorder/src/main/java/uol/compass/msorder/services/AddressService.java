@@ -1,5 +1,7 @@
 package uol.compass.msorder.services;
 
+import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
+import org.springframework.cloud.openfeign.FeignAutoConfiguration;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;

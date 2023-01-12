@@ -15,6 +15,7 @@ import uol.compass.msorder.services.OrderServiceImpl;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/api/pedidos")
 public class OrderController {
 
     private final AddressService addressService;
@@ -26,13 +27,13 @@ public class OrderController {
 //        return ResponseEntity.ok().body(addressService.findAddress(cep));
 //    }
 
-    @PostMapping("/api/pedidos")
+    @PostMapping
     public ResponseEntity<OrderResponseDTO> create(@RequestBody @Valid OrderRequestDTO requestDTO){
         OrderResponseDTO orderResponseDTO = orderService.create(requestDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(orderResponseDTO);
     }
 
-    @GetMapping("/api/pedidos")
+    @GetMapping
     public ResponseEntity<OrderResponseParameters> findAll(
             @RequestParam(required = false) String cpf,
             Pageable pageable){
@@ -41,10 +42,16 @@ public class OrderController {
         return ResponseEntity.status(HttpStatus.OK).body(orderResponse);
     }
 
-    @GetMapping("/api/pedidos/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<OrderResponseDTO> findById(@PathVariable("id") Long id){
         OrderResponseDTO orderResponseDTO = orderService.findById(id);
         return ResponseEntity.status(HttpStatus.OK).body(orderResponseDTO);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<OrderResponseDTO> delete(@PathVariable("id") Long id){
+        orderService.delete(id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
 

@@ -4,7 +4,6 @@ import org.springframework.data.domain.Pageable;
 import uol.compass.msorder.model.dtos.request.OrderRequestDTO;
 import uol.compass.msorder.model.dtos.response.OrderResponseDTO;
 import uol.compass.msorder.model.dtos.response.OrderResponseParameters;
-import uol.compass.msorder.model.entities.OrderEntity;
 
 public interface OrderService {
 
@@ -13,4 +12,6 @@ public interface OrderService {
     OrderResponseParameters findAll(String cpf, Pageable pageable);
 
     OrderResponseDTO findById(Long id);
+
+    void delete(Long id);
 }
