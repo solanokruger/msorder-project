@@ -26,7 +26,7 @@ public class ItemRequestDTO {
     private LocalDateTime validationDate;
 
     @NotNull
-    private double valor;
+    private double value;
 
     @NotBlank
     private String description;

@@ -22,7 +22,7 @@ public class ItemResponseDTO {
     @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
     private LocalDateTime validationDate;
 
-    private double valor;
+    private double value;
 
     private String description;
 }

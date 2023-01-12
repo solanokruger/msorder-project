@@ -26,15 +26,11 @@ import java.util.stream.Collectors;
 public class OrderServiceImpl implements OrderService{
 
     private final OrderRepository orderRepository;
-
     private final AddressRepository addressRepository;
     private final ItemServiceImpl itemService;
-
     private final AddressService addressService;
-
     @Autowired
     private final ModelMapper modelMapper;
-
 
     @Override
     public OrderResponseDTO create(OrderRequestDTO request) {

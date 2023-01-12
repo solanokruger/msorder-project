@@ -1,8 +1,8 @@
 package uol.compass.msorder.controllers;
 
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,17 +10,16 @@ import org.springframework.web.bind.annotation.*;
 import uol.compass.msorder.model.dtos.request.OrderRequestDTO;
 import uol.compass.msorder.model.dtos.response.OrderResponseDTO;
 import uol.compass.msorder.model.dtos.response.OrderResponseParameters;
-import uol.compass.msorder.model.entities.OrderEntity;
 import uol.compass.msorder.services.AddressService;
 import uol.compass.msorder.services.OrderServiceImpl;
 
 @RestController
+@RequiredArgsConstructor
 public class OrderController {
-    @Autowired
-    private AddressService addressService;
 
-    @Autowired
-    private OrderServiceImpl orderService;
+    private final AddressService addressService;
+
+    private final OrderServiceImpl orderService;
 
 //    @GetMapping("/{cep}")
 //    public ResponseEntity findAddress(@PathVariable String cep){
