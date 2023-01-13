@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import uol.compass.msorder.model.dtos.request.ItemRequestDTO;
 import uol.compass.msorder.model.dtos.response.ItemResponseDTO;
 import uol.compass.msorder.model.entities.ItemEntity;
+import uol.compass.msorder.model.exceptions.InvalidDateException;
 import uol.compass.msorder.model.exceptions.ItemNotFoundException;
 import uol.compass.msorder.repositories.ItemRepository;
 
@@ -19,6 +20,8 @@ public class ItemServiceImpl implements ItemService{
     private final ItemRepository itemRepository;
 
     public ItemResponseDTO update(Long id, ItemRequestDTO requestDTO){
+        validateDate(requestDTO);
+
         ItemEntity itemToUpdate = findById(id);
 
         itemToUpdate.setName(requestDTO.getName());
@@ -32,23 +35,19 @@ public class ItemServiceImpl implements ItemService{
         return modelMapper.map(itemToUpdate, ItemResponseDTO.class);
     }
 
+    private void validateDate(ItemRequestDTO requestDTO) {
+        if(!(requestDTO.getCreationDate().isBefore(requestDTO.getValidationDate()))){
+            throw new InvalidDateException();
+        }
+    }
+
     public ItemEntity findById(Long id) {
          return itemRepository.findById(id)
                 .orElseThrow(ItemNotFoundException::new);
     }
 
     public void create(List <ItemEntity> items) {
-        List<ItemEntity> existentItems = itemRepository.findAll();
-
-        for (ItemEntity item: items) {
-            for (ItemEntity j : existentItems){
-                if (!(j.getValue() == item.getValue() && j.getName().equalsIgnoreCase(item.getName()))) {
-                    itemRepository.save(item);
-                }
-
-            }
-        }
-
+        items.forEach(itemRepository::save);
     }
 
     public List<ItemEntity> findAll(){

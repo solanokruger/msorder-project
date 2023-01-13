@@ -1,24 +1,24 @@
 package uol.compass.msorder.services;
 
 import lombok.RequiredArgsConstructor;
-import org.hibernate.Transaction;
-import org.hibernate.cache.spi.support.AbstractReadWriteAccess;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import uol.compass.msorder.model.dtos.request.ItemRequestDTO;
 import uol.compass.msorder.model.dtos.request.OrderRequestDTO;
+import uol.compass.msorder.model.dtos.request.OrderRequestUpdateDTO;
 import uol.compass.msorder.model.dtos.response.OrderResponseDTO;
 import uol.compass.msorder.model.dtos.response.OrderResponseParameters;
 import uol.compass.msorder.model.entities.AddressEntity;
 import uol.compass.msorder.model.entities.ItemEntity;
 import uol.compass.msorder.model.entities.OrderEntity;
+import uol.compass.msorder.model.exceptions.InvalidDateException;
 import uol.compass.msorder.model.exceptions.OrderNotFoundException;
 import uol.compass.msorder.repositories.AddressRepository;
 import uol.compass.msorder.repositories.OrderRepository;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -35,12 +35,13 @@ public class OrderServiceImpl implements OrderService{
 
     @Override
     public OrderResponseDTO create(OrderRequestDTO request) {
+        validateDate(request.getItems());
         AddressEntity orderAddress = createAddress(request);
 
         OrderEntity orderToCreate = new OrderEntity();
 
         itemService.create(request.getItems());
-       // List<ItemEntity> items = validateItems(request.getItems());
+
         orderToCreate.setItems(request.getItems());
         orderToCreate.setCpf(request.getCpf());
         orderToCreate.setTotal(calculateTotal(request.getItems()));
@@ -68,6 +69,25 @@ public class OrderServiceImpl implements OrderService{
     }
 
     @Override
+    public OrderResponseDTO update(Long id, OrderRequestUpdateDTO request) {
+        OrderRequestDTO oldOrder = modelMapper.map(findById(id), OrderRequestDTO.class);
+        OrderRequestDTO addressRequest = modelMapper.map(request, OrderRequestDTO.class);
+        AddressEntity orderAddress = createAddress(addressRequest);
+
+        OrderEntity orderToUpdate = new OrderEntity();
+
+        orderToUpdate.setCpf(request.getCpf());
+        orderToUpdate.setAddressEntity(orderAddress);
+        orderToUpdate.setItems(oldOrder.getItems());
+        orderToUpdate.setTotal(oldOrder.getTotal());
+        orderToUpdate.setId(id);
+
+        orderRepository.save(orderToUpdate);
+
+        return modelMapper.map(orderToUpdate, OrderResponseDTO.class);
+    }
+
+    @Override
     public void delete(Long id) {
         findById(id);
         orderRepository.deleteById(id);
@@ -85,40 +105,20 @@ public class OrderServiceImpl implements OrderService{
                 .orders(order)
                 .build();
     }
-
-//    public List<ItemEntity> validateItems(List<ItemEntity> items){
-//        List<ItemEntity> existentItems = itemService.findAll();
-//
-//        boolean validation = false;
-//
-//        List<ItemEntity> itemList = new ArrayList<>();
-//        List<ItemEntity> newItems = new ArrayList<>();
-//
-//        for (ItemEntity i: items ) {
-//
-//            for (ItemEntity j : existentItems) {
-//
-//                if (j.getValue() == i.getValue() && j.getName().equalsIgnoreCase(i.getName())) {
-//                    itemList.add(itemService.getItemById(j.getId()));
-//                    validation = true;
-//                }
-//                newItems.add(i);
-//
-//            }
-//
-//        }
-//
-//        if (validation == true){
-//            return itemList;
-//        }else{
-//            itemService.create(newItems);
-//            return newItems;
-//        }
-//
-//    }
-
+    
     public double calculateTotal(List<ItemEntity> items){
         return items.stream().mapToDouble(ItemEntity::getValue).sum();
+    }
+
+    public void validateDate(List<ItemEntity> itemList){
+
+        for (ItemEntity item: itemList) {
+            if(!(item.getCreationDate().isBefore(item.getValidationDate()))){
+                throw new InvalidDateException();
+            }
+        }
+
+
     }
 
     public OrderResponseDTO createOrderResponse(OrderEntity order) {

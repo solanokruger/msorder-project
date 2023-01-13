@@ -46,6 +46,8 @@ public class ItemServiceImplTest {
         ItemRequestDTO request = new ItemRequestDTO();
 
         request.setName("Teste");
+        request.setCreationDate(LocalDateTime.now());
+        request.setValidationDate(LocalDateTime.now().plusDays(1));
         request.setDescription("Item de teste");
 
         Mockito.when(itemRepository.findById(any())).thenReturn(Optional.of(item));

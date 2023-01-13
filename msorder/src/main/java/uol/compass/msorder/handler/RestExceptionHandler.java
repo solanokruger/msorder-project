@@ -15,6 +15,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import uol.compass.msorder.constants.ErrorCode;
 import uol.compass.msorder.model.dtos.response.ExceptionResponse;
+import uol.compass.msorder.model.exceptions.InvalidDateException;
 import uol.compass.msorder.model.exceptions.ItemNotFoundException;
 import uol.compass.msorder.model.exceptions.OrderNotFoundException;
 
@@ -71,6 +72,12 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     public final ResponseEntity<Object> handleOrderNotFoundException(OrderNotFoundException ex) {
         ExceptionResponse exceptionResponse = new ExceptionResponse(ErrorCode.ORDER_NOT_FOUND, ex);
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exceptionResponse);
+    }
+
+    @ExceptionHandler(InvalidDateException.class)
+    public final ResponseEntity<Object> handleInvalidDateException(InvalidDateException ex) {
+        ExceptionResponse exceptionResponse = new ExceptionResponse(ErrorCode.INVALID_DATE_PARAMETER, ex);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exceptionResponse);
     }
 
 

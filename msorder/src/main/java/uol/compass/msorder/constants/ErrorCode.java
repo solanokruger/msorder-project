@@ -12,7 +12,8 @@ public enum ErrorCode {
 
     INTERNAL_SERVER_ERROR("Erro interno do servidor"),
     ITEM_NOT_FOUND("Item não encontrado!"),
-    ORDER_NOT_FOUND("Pedido não encontrado! ");
+    ORDER_NOT_FOUND("Pedido não encontrado! "),
+    INVALID_DATE_PARAMETER("A data de criação deve ser antes da validade !");
 
     private final String message;
 }

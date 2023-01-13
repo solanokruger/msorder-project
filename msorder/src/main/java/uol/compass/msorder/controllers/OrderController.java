@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import uol.compass.msorder.model.dtos.request.OrderRequestDTO;
+import uol.compass.msorder.model.dtos.request.OrderRequestUpdateDTO;
 import uol.compass.msorder.model.dtos.response.OrderResponseDTO;
 import uol.compass.msorder.model.dtos.response.OrderResponseParameters;
 import uol.compass.msorder.services.AddressService;
@@ -46,6 +47,14 @@ public class OrderController {
     public ResponseEntity<OrderResponseDTO> findById(@PathVariable("id") Long id){
         OrderResponseDTO orderResponseDTO = orderService.findById(id);
         return ResponseEntity.status(HttpStatus.OK).body(orderResponseDTO);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<OrderResponseDTO> update(@PathVariable Long id,
+                                                   @RequestBody @Valid OrderRequestUpdateDTO request) {
+
+        OrderResponseDTO responseDTO = orderService.update(id, request);
+        return ResponseEntity.status(HttpStatus.OK).body(responseDTO);
     }
 
     @DeleteMapping("/{id}")

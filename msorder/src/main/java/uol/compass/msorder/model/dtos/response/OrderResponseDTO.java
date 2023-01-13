@@ -17,7 +17,7 @@ public class OrderResponseDTO {
 
     private String cpf;
 
-    private List<ItemEntity> items;
+    private List<ItemResponseDTO> items;
 
     private double total;
 
