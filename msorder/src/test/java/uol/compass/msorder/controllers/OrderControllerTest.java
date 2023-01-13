@@ -11,7 +11,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import uol.compass.msorder.model.dtos.request.OrderRequestDTO;
-import uol.compass.msorder.model.dtos.response.ItemResponseDTO;
 import uol.compass.msorder.model.dtos.response.OrderResponseDTO;
 import uol.compass.msorder.model.dtos.response.OrderResponseParameters;
 import uol.compass.msorder.model.entities.ItemEntity;
@@ -82,19 +81,6 @@ public class OrderControllerTest {
     }
 
     @Test
-    void delete() throws Exception {
-        MvcResult result = mvc
-                .perform(MockMvcRequestBuilders.delete(ID_URL)
-                        .accept(MediaType.APPLICATION_JSON)
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andReturn();
-
-        MockHttpServletResponse response = result.getResponse();
-
-        assertEquals(HttpStatus.NO_CONTENT.value(), response.getStatus());
-    }
-
-    @Test
     void findById() throws Exception {
         OrderResponseDTO orderResponseDTO = new OrderResponseDTO();
 
@@ -110,6 +96,21 @@ public class OrderControllerTest {
 
         assertEquals(HttpStatus.OK.value(), response.getStatus());
     }
+
+    @Test
+    void delete() throws Exception {
+        MvcResult result = mvc
+                .perform(MockMvcRequestBuilders.delete(ID_URL)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
+
+        MockHttpServletResponse response = result.getResponse();
+
+        assertEquals(HttpStatus.NO_CONTENT.value(), response.getStatus());
+    }
+
+
 
 
     private OrderRequestDTO getOrderRequestDTO() {

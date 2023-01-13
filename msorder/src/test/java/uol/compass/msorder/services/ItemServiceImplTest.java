@@ -10,7 +10,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
 import uol.compass.msorder.model.dtos.request.ItemRequestDTO;
 import uol.compass.msorder.model.dtos.response.ItemResponseDTO;
-import uol.compass.msorder.model.dtos.response.OrderResponseDTO;
 import uol.compass.msorder.model.entities.ItemEntity;
 import uol.compass.msorder.repositories.ItemRepository;
 

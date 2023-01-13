@@ -22,7 +22,7 @@ public class OrderEntity {
     @Column(name = "cpf")
     private String cpf;
 
-    @OneToMany
+    @OneToMany(cascade=CascadeType.PERSIST)
     @JoinColumn(name = "item_id")
     private List<ItemEntity> items;
 

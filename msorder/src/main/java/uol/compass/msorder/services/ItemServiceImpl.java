@@ -19,7 +19,7 @@ public class ItemServiceImpl implements ItemService{
     private final ItemRepository itemRepository;
 
     public ItemResponseDTO update(Long id, ItemRequestDTO requestDTO){
-        ItemEntity itemToUpdate = getItemById(id);
+        ItemEntity itemToUpdate = findById(id);
 
         itemToUpdate.setName(requestDTO.getName());
         itemToUpdate.setValue(requestDTO.getValue());
@@ -32,19 +32,31 @@ public class ItemServiceImpl implements ItemService{
         return modelMapper.map(itemToUpdate, ItemResponseDTO.class);
     }
 
-    public ItemEntity getItemById(Long id) {
-        return itemRepository.findById(id)
+    public ItemEntity findById(Long id) {
+         return itemRepository.findById(id)
                 .orElseThrow(ItemNotFoundException::new);
     }
 
-    public void create(List <ItemEntity> item) {
-        for (int i = 0; i < item.size(); i++) {
-            itemRepository.save(item.get(i));
+    public void create(List <ItemEntity> items) {
+        List<ItemEntity> existentItems = itemRepository.findAll();
+
+        for (ItemEntity item: items) {
+            for (ItemEntity j : existentItems){
+                if (!(j.getValue() == item.getValue() && j.getName().equalsIgnoreCase(item.getName()))) {
+                    itemRepository.save(item);
+                }
+
+            }
         }
+
     }
 
     public List<ItemEntity> findAll(){
         return itemRepository.findAll();
     }
+
+
+
+
 
 }

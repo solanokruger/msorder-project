@@ -39,9 +39,9 @@ public class OrderServiceImpl implements OrderService{
 
         OrderEntity orderToCreate = new OrderEntity();
 
-        //itemService.create(request.getItems());
-        List<ItemEntity> items = validateItems(request.getItems());
-        orderToCreate.setItems(items);
+        itemService.create(request.getItems());
+       // List<ItemEntity> items = validateItems(request.getItems());
+        orderToCreate.setItems(request.getItems());
         orderToCreate.setCpf(request.getCpf());
         orderToCreate.setTotal(calculateTotal(request.getItems()));
         orderToCreate.setAddressEntity(orderAddress);
@@ -86,38 +86,36 @@ public class OrderServiceImpl implements OrderService{
                 .build();
     }
 
-    public List<ItemEntity> validateItems(List<ItemEntity> items){
-        List<ItemEntity> existentItems = itemService.findAll();
-
-        boolean validation = false;
-
-        List<ItemEntity> itemList = new ArrayList<>();
-        List<ItemEntity> newItems = new ArrayList<>();
-
-        for (ItemEntity i: items ) {
-
-            for (ItemEntity j : existentItems) {
-
-                if (j.getValue() == i.getValue() && j.getName().equalsIgnoreCase(i.getName())) {
-                    itemList.add(itemService.getItemById(j.getId()));
-                    validation = true;
-                }
-                newItems.add(i);
-
-            }
-
-        }
-
-        if (validation == true){
-            return itemList;
-        }else{
-            itemService.create(newItems);
-            return newItems;
-        }
-
-
-
-    }
+//    public List<ItemEntity> validateItems(List<ItemEntity> items){
+//        List<ItemEntity> existentItems = itemService.findAll();
+//
+//        boolean validation = false;
+//
+//        List<ItemEntity> itemList = new ArrayList<>();
+//        List<ItemEntity> newItems = new ArrayList<>();
+//
+//        for (ItemEntity i: items ) {
+//
+//            for (ItemEntity j : existentItems) {
+//
+//                if (j.getValue() == i.getValue() && j.getName().equalsIgnoreCase(i.getName())) {
+//                    itemList.add(itemService.getItemById(j.getId()));
+//                    validation = true;
+//                }
+//                newItems.add(i);
+//
+//            }
+//
+//        }
+//
+//        if (validation == true){
+//            return itemList;
+//        }else{
+//            itemService.create(newItems);
+//            return newItems;
+//        }
+//
+//    }
 
     public double calculateTotal(List<ItemEntity> items){
         return items.stream().mapToDouble(ItemEntity::getValue).sum();
