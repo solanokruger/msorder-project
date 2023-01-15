@@ -10,6 +10,7 @@ import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import uol.compass.msorder.model.dtos.request.ItemRequestDTO;
 import uol.compass.msorder.model.dtos.request.OrderRequestDTO;
 import uol.compass.msorder.model.dtos.response.OrderResponseDTO;
 import uol.compass.msorder.model.dtos.response.OrderResponseParameters;
@@ -119,7 +120,7 @@ public class OrderControllerTest {
         return OrderRequestDTO.builder()
                 .cpf("031.090.920-18")
                 .total(55)
-                .items(new ArrayList<ItemEntity>())
+                .items(new ArrayList<ItemRequestDTO>())
                 .cep("98270000")
                 .complemento("123")
                 .build();

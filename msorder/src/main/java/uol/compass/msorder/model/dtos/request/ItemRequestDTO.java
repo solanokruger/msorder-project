@@ -1,14 +1,12 @@
 package uol.compass.msorder.model.dtos.request;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import jakarta.annotation.Nullable;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Builder
@@ -23,7 +21,7 @@ public class ItemRequestDTO {
     @NotNull
     private LocalDateTime creationDate;
 
-    @Nullable
+    @NotNull
     private LocalDateTime validationDate;
 
     @NotNull

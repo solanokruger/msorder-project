@@ -1,8 +1,6 @@
 package uol.compass.msorder.controllers;
 
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +11,8 @@ import uol.compass.msorder.model.dtos.response.OrderResponseDTO;
 import uol.compass.msorder.model.dtos.response.OrderResponseParameters;
 import uol.compass.msorder.services.AddressService;
 import uol.compass.msorder.services.OrderServiceImpl;
+
+import javax.validation.Valid;
 
 @RestController
 @RequiredArgsConstructor
@@ -29,7 +29,7 @@ public class OrderController {
 //    }
 
     @PostMapping
-    public ResponseEntity<OrderResponseDTO> create(@RequestBody @Valid OrderRequestDTO requestDTO){
+    public ResponseEntity<OrderResponseDTO> create(@Valid @RequestBody OrderRequestDTO requestDTO){
         OrderResponseDTO orderResponseDTO = orderService.create(requestDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(orderResponseDTO);
     }

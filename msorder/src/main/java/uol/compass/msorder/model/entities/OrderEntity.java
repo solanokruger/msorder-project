@@ -1,10 +1,10 @@
 package uol.compass.msorder.model.entities;
 
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.*;
 import java.util.List;
 
 
@@ -22,7 +22,7 @@ public class OrderEntity {
     @Column(name = "cpf")
     private String cpf;
 
-    @OneToMany(cascade=CascadeType.PERSIST)
+    @OneToMany
     @JoinColumn(name = "item_id")
     private List<ItemEntity> items;
 

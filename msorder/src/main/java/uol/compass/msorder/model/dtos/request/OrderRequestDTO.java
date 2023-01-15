@@ -1,13 +1,13 @@
 package uol.compass.msorder.model.dtos.request;
 
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.br.CPF;
-import uol.compass.msorder.model.entities.ItemEntity;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Builder
@@ -16,11 +16,12 @@ import java.util.List;
 @NoArgsConstructor
 public class OrderRequestDTO {
 
-    @CPF
+    @CPF(message = "CPF inválido")
+    @NotBlank
     private String cpf;
 
     @NotNull
-    private List<ItemEntity> items;
+    private List<ItemRequestDTO> items;
 
     @NotNull
     private double total;
@@ -28,7 +29,7 @@ public class OrderRequestDTO {
     @NotNull
     private String cep;
 
-    @NotNull
+    @NotBlank
     private String complemento;
 
 }

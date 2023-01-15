@@ -8,6 +8,8 @@ import uol.compass.msorder.model.dtos.request.ItemRequestDTO;
 import uol.compass.msorder.model.dtos.response.ItemResponseDTO;
 import uol.compass.msorder.services.ItemServiceImpl;
 
+import javax.validation.Valid;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/itens")
@@ -17,7 +19,7 @@ public class ItemController {
 
     @PatchMapping(value = "/{id}")
     public ResponseEntity<ItemResponseDTO> update(@PathVariable Long id,
-                                                  @RequestBody ItemRequestDTO itemRequestDTO){
+                                                  @Valid @RequestBody ItemRequestDTO itemRequestDTO){
         ItemResponseDTO responseDTO =itemService.update(id, itemRequestDTO);
         return ResponseEntity.status(HttpStatus.OK).body(responseDTO);
     }

@@ -1,11 +1,10 @@
 package uol.compass.msorder.model.entities;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity(name = "item")

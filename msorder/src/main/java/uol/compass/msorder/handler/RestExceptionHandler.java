@@ -1,5 +1,6 @@
 package uol.compass.msorder.handler;
 
+import org.springframework.data.mapping.PropertyReferenceException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,18 +15,19 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import uol.compass.msorder.constants.ErrorCode;
-import uol.compass.msorder.model.dtos.response.ExceptionResponse;
+import uol.compass.msorder.model.dtos.ExceptionResponse;
 import uol.compass.msorder.model.exceptions.InvalidDateException;
 import uol.compass.msorder.model.exceptions.ItemNotFoundException;
 import uol.compass.msorder.model.exceptions.OrderNotFoundException;
 
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 import java.util.List;
 
 @ControllerAdvice
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
-    protected ResponseEntity<Object> handleMissingServletRequestParameter(MissingServletRequestParameterException ex,
+    protected ResponseEntity<Object> handleMissingServletRequestParameter (MissingServletRequestParameterException ex,
                                                                           HttpHeaders headers, HttpStatus status, WebRequest request) {
         ExceptionResponse exceptionResponse = new ExceptionResponse(ErrorCode.INVALID_PARAMETER, ex);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exceptionResponse);
@@ -56,11 +58,29 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exceptionResponse);
     }
 
+
     protected ResponseEntity<Object> handleServletRequestBindingException(ServletRequestBindingException ex,
                                                                           HttpHeaders headers, HttpStatus status, WebRequest request) {
         ExceptionResponse exceptionResponse = new ExceptionResponse(ErrorCode.BAD_REQUEST, ex);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exceptionResponse);
     }
+
+    @ExceptionHandler(Exception.class)
+    public final ResponseEntity<Object> handleAllExceptions(Exception ex) {
+        ExceptionResponse exceptionResponse = new ExceptionResponse(ErrorCode.INTERNAL_SERVER_ERROR, ex);
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(exceptionResponse);
+    }
+
+    @ExceptionHandler(PropertyReferenceException.class)
+    public final ResponseEntity<Object> handlePropertyReferenceException(PropertyReferenceException ex) {
+        ExceptionResponse exceptionResponse = new ExceptionResponse(ErrorCode.BAD_REQUEST, ex);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exceptionResponse);
+    }
+
+//    @ExceptionHandler(DataIntegrityViolationException.class)
+//    protected ResponseEntity<Object> objectAldreadyRegistered(DataIntegrityViolationException ex) {
+//        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+//    }
 
     @ExceptionHandler(ItemNotFoundException.class)
     public final ResponseEntity<Object> handleItemNotFoundException(ItemNotFoundException ex) {
@@ -79,6 +99,14 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         ExceptionResponse exceptionResponse = new ExceptionResponse(ErrorCode.INVALID_DATE_PARAMETER, ex);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exceptionResponse);
     }
+
+    @ExceptionHandler(SQLIntegrityConstraintViolationException.class)
+    public final ResponseEntity<Object> handleSQLIntegrityConstraintViolationException(
+            SQLIntegrityConstraintViolationException ex){
+        ExceptionResponse exceptionResponse = new ExceptionResponse(ErrorCode.INVALID_PARAMETER, ex);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exceptionResponse);
+    }
+
 
 
 }

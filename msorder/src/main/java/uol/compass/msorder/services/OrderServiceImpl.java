@@ -40,9 +40,11 @@ public class OrderServiceImpl implements OrderService{
 
         OrderEntity orderToCreate = new OrderEntity();
 
-        itemService.create(request.getItems());
+        List<ItemEntity> items = mapList(request);
 
-        orderToCreate.setItems(request.getItems());
+        itemService.create(items);
+
+        orderToCreate.setItems(items);
         orderToCreate.setCpf(request.getCpf());
         orderToCreate.setTotal(calculateTotal(request.getItems()));
         orderToCreate.setAddressEntity(orderAddress);
@@ -76,9 +78,11 @@ public class OrderServiceImpl implements OrderService{
 
         OrderEntity orderToUpdate = new OrderEntity();
 
+        List<ItemEntity> items = mapList(oldOrder);
+
         orderToUpdate.setCpf(request.getCpf());
         orderToUpdate.setAddressEntity(orderAddress);
-        orderToUpdate.setItems(oldOrder.getItems());
+        orderToUpdate.setItems(items);
         orderToUpdate.setTotal(oldOrder.getTotal());
         orderToUpdate.setId(id);
 
@@ -93,6 +97,15 @@ public class OrderServiceImpl implements OrderService{
         orderRepository.deleteById(id);
     }
 
+    public List<ItemEntity> mapList(OrderRequestDTO request){
+        return request
+                .getItems()
+                .stream()
+                .map(itemRequestDTO -> modelMapper.map(itemRequestDTO, ItemEntity.class))
+                .collect(Collectors.toList());
+    }
+
+
     private OrderResponseParameters createOrderResponseParameters(Page<OrderEntity> page) {
         List<OrderResponseDTO> order = page.stream()
                 .map(this::createOrderResponse)
@@ -106,13 +119,13 @@ public class OrderServiceImpl implements OrderService{
                 .build();
     }
     
-    public double calculateTotal(List<ItemEntity> items){
-        return items.stream().mapToDouble(ItemEntity::getValue).sum();
+    public double calculateTotal(List<ItemRequestDTO> items){
+        return items.stream().mapToDouble(ItemRequestDTO::getValue).sum();
     }
 
-    public void validateDate(List<ItemEntity> itemList){
+    public void validateDate(List<ItemRequestDTO> itemList){
 
-        for (ItemEntity item: itemList) {
+        for (ItemRequestDTO item: itemList) {
             if(!(item.getCreationDate().isBefore(item.getValidationDate()))){
                 throw new InvalidDateException();
             }

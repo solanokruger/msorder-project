@@ -1,9 +1,10 @@
 package uol.compass.msorder.model.entities;
 
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
 
 @Entity(name = "address")
 @Table(name = "address")
