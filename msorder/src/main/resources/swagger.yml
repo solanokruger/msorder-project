@@ -42,7 +42,14 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/OrderResponseDTO"
-
+        "400":
+          description: BAD_REQUEST
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/InvalidParameter"
     get:
       tags:
         - Order
@@ -53,7 +60,7 @@ paths:
       #   - name: cpf
       #     in: path
       #     description: CPF do Pedido para solicitação.
-      #     required: true
+      #     required: false
       #     schema:
       #       type: string
       responses:
@@ -65,7 +72,9 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/OrderResponseDTO"
+
   /api/pedidos/{id}:
+
     get:
       tags:
         - Order
@@ -125,6 +134,14 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/OrderResponseDTO"
+        "400":
+          description: BAD_REQUEST
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/InvalidParameter"
         "404":
           description: ORDER_NOT_FOUND
           content:
@@ -157,6 +174,7 @@ paths:
                 $ref: "#/components/schemas/OrderNotFoundException"
 
   /api/itens/{id}:
+
     patch:
       tags:
         - Order
@@ -186,6 +204,14 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/ItemResponseDTO"
+        "400":
+          description: BAD_REQUEST
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/InvalidParameter"
         "404":
           description: ITEM_NOT_FOUND
           content:
@@ -304,7 +330,6 @@ components:
         value: 99.9
         description: "Descrição do item"
 
-
     AddressEntity:
       type: object
       properties:
@@ -351,6 +376,46 @@ components:
         httpStatus:
           type: string
 
+    InvalidDateException:
+      type: object
+      properties:
+        details:
+          type: string
+        errorCode:
+          type: string
+        httpStatus:
+          type: string
+
+    NullDateException:
+      type: object
+      properties:
+        details:
+          type: string
+        errorCode:
+          type: string
+        httpStatus:
+          type: string
+
+    InvalidItemValueException:
+      type: object
+      properties:
+        details:
+          type: string
+        errorCode:
+          type: string
+        httpStatus:
+          type: string
+
+    InvalidParameter:
+      type: object
+      properties:
+        details:
+          type: string
+        errorCode:
+          type: string
+        httpStatus:
+          type: string
+
     JsonProcessingException:
       type: object
       properties:
@@ -362,3 +427,4 @@ components:
           type: string
 
 
+    
