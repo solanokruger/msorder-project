@@ -18,9 +18,7 @@ tags:
   - name: Item
     description: Todas as informações dos itens.
 paths:
-
   /api/pedidos:
-
     post:
       tags:
         - Order
@@ -42,20 +40,27 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/OrderResponseDTO"
-
+        "400":
+          description: BAD_REQUEST
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/InvalidParameter"
     get:
       tags:
         - Order
       summary: Listar todos os Pedidos.
       description: Retorna uma lista de Pedidos.
       operationId: findAll
-      # parameters:
-      #   - name: cpf
-      #     in: path
-      #     description: CPF do Pedido para solicitação.
-      #     required: true
-      #     schema:
-      #       type: string
+      parameters:
+        - name: cpf
+          in: query
+          description: CPF para solicitação dos Pedidos.
+          required: false
+          schema:
+            type: string
       responses:
         "200":
           description: OK
@@ -65,6 +70,7 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/OrderResponseDTO"
+
   /api/pedidos/{id}:
     get:
       tags:
@@ -95,7 +101,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/OrderNotFoundException"
-
     put:
       tags:
         - Order
@@ -125,13 +130,20 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/OrderResponseDTO"
+        "400":
+          description: BAD_REQUEST
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/InvalidParameter"
         "404":
           description: ORDER_NOT_FOUND
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/OrderNotFoundException"
-
     delete:
       tags:
         - Order
@@ -159,7 +171,7 @@ paths:
   /api/itens/{id}:
     patch:
       tags:
-        - Order
+        - Item
       summary: Atualiza um Item pelo ID.
       description: Atualiza um Item especifico.
       operationId: update (item)
@@ -186,17 +198,22 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/ItemResponseDTO"
+        "400":
+          description: BAD_REQUEST
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/InvalidParameter"
         "404":
           description: ITEM_NOT_FOUND
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/ItemNotFoundException"
-
-
 components:
   schemas:
-
     OrderRequestDTO:
       type: object
       properties:
@@ -253,9 +270,6 @@ components:
         total: 99.9
         address: "#/components/schemas/AddressEntity"
 
-
-
-
     ItemRequestDTO:
       type: object
       properties:
@@ -304,7 +318,6 @@ components:
         value: 99.9
         description: "Descrição do item"
 
-
     AddressEntity:
       type: object
       properties:
@@ -351,7 +364,7 @@ components:
         httpStatus:
           type: string
 
-    JsonProcessingException:
+    InvalidParameter:
       type: object
       properties:
         details:
@@ -361,4 +374,12 @@ components:
         httpStatus:
           type: string
 
-
+    JsonProcessingException:
+      type: object
+      properties:
+        details:
+          type: string
+        errorCode:
+          type: string
+        httpStatus:
+          type: string
