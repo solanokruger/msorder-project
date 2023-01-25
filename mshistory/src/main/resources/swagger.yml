@@ -1,0 +1,91 @@
+openapi: 3.0.3
+info:
+  title: API Microsserviço History
+  description: |-
+    O Microsserviço History possui a funcionalidade de 
+    listar um histórico de pedidos efetuados, em relação
+    a sua data de criação.
+
+  termsOfService: http://swagger.io/terms/
+  contact:
+    email: solano.kruger.pb@compasso.com.br
+  version: 0.0.1
+servers:
+  - url: http://localhost:8080
+    description: MS-History Local API
+tags:
+  - name: History
+    description: Todas as informações dos históricos.
+paths:
+
+  /api/historico:
+
+    get:
+      tags:
+        - History
+      summary: Lista Histórico de todos os Pedidos.
+      description: Retorna uma lista de Pedidos.
+      operationId: findAll
+      parameters:
+        - name: cpf
+          in: query
+          description: CPF para solicitação dos Pedidos.
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/HistoryResponseDTO"
+
+components:
+  schemas:
+
+    HistoryResponseDTO:
+      type: object
+      properties:
+        id:
+          type: string
+        idOrder:
+          type: integer
+          format: int64
+        orderTotal:
+          type: integer
+          format: int64
+        orderDate:
+          type: string
+      example:
+        id: "63c6e54d50205b2b22a83646"
+        idOrder: 1
+        orderTotal: 99.9
+        orderDate: "04-01-2024 21:00:00"
+
+    OrderPublisherData:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        total:
+          type: number
+      example:
+        id: 1
+        total: 99.9
+
+    JsonProcessingException:
+      type: object
+      properties:
+        details:
+          type: string
+        errorCode:
+          type: string
+        httpStatus:
+          type: string
+
+
+    
