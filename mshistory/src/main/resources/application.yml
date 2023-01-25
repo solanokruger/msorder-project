@@ -1,0 +1,16 @@
+spring:
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: order_history
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: admin
+    password: admin
+mq:
+  queues:
+    orders: orders
+server:
+  port: 8090
