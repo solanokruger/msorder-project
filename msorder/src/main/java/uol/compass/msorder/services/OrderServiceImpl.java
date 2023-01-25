@@ -1,12 +1,14 @@
 package uol.compass.msorder.services;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import uol.compass.msorder.model.dtos.request.ItemRequestDTO;
+import org.springframework.transaction.annotation.Transactional;
+import uol.compass.msorder.infra.mqueue.OrderPublisher;
 import uol.compass.msorder.model.dtos.request.OrderRequestDTO;
 import uol.compass.msorder.model.dtos.request.OrderRequestUpdateDTO;
 import uol.compass.msorder.model.dtos.response.OrderResponseDTO;
@@ -14,7 +16,10 @@ import uol.compass.msorder.model.dtos.response.OrderResponseParameters;
 import uol.compass.msorder.model.entities.AddressEntity;
 import uol.compass.msorder.model.entities.ItemEntity;
 import uol.compass.msorder.model.entities.OrderEntity;
+import uol.compass.msorder.model.entities.OrderPublisherData;
 import uol.compass.msorder.model.exceptions.InvalidDateException;
+import uol.compass.msorder.model.exceptions.InvalidItemValueException;
+import uol.compass.msorder.model.exceptions.NullDateException;
 import uol.compass.msorder.model.exceptions.OrderNotFoundException;
 import uol.compass.msorder.repositories.AddressRepository;
 import uol.compass.msorder.repositories.OrderRepository;
@@ -24,33 +29,37 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Log4j2
 public class OrderServiceImpl implements OrderService{
 
+    private final OrderPublisher orderPublisher;
     private final OrderRepository orderRepository;
     private final AddressRepository addressRepository;
     private final ItemServiceImpl itemService;
     private final AddressService addressService;
-    @Autowired
     private final ModelMapper modelMapper;
 
     @Override
-    public OrderResponseDTO create(OrderRequestDTO request) {
+    @Transactional
+    public OrderResponseDTO create(OrderRequestDTO request) throws JsonProcessingException {
+        validateItemValue(request.getItems());
+        validateNullDate(request.getItems());
         validateDate(request.getItems());
         AddressEntity orderAddress = createAddress(request);
 
         OrderEntity orderToCreate = new OrderEntity();
+        itemService.create(request.getItems());
 
-        List<ItemEntity> items = mapList(request);
-
-        itemService.create(items);
-
-        orderToCreate.setItems(items);
+        orderToCreate.setItems(request.getItems());
         orderToCreate.setCpf(request.getCpf());
         orderToCreate.setTotal(calculateTotal(request.getItems()));
         orderToCreate.setAddressEntity(orderAddress);
 
         OrderEntity newOrder = orderRepository.save(orderToCreate);
+        OrderPublisherData orderData = createOrderPublisherData(newOrder);
 
+        orderPublisher.publishOrder(orderData);
+        log.info("Create Service Called");
         return modelMapper.map(newOrder, OrderResponseDTO.class);
     }
 
@@ -59,6 +68,7 @@ public class OrderServiceImpl implements OrderService{
         Page<OrderEntity> page = cpf == null ?
                 orderRepository.findAll(pageable) :
                 orderRepository.findAllByCpf(cpf, pageable);
+        log.info("FindAll Service Called");
         return createOrderResponseParameters(page);
     }
 
@@ -66,7 +76,7 @@ public class OrderServiceImpl implements OrderService{
     public OrderResponseDTO findById(Long id) {
         OrderEntity order = orderRepository.findById(id)
                 .orElseThrow(OrderNotFoundException::new);
-
+        log.info("FindById Service Called");
         return modelMapper.map(order, OrderResponseDTO.class);
     }
 
@@ -87,17 +97,27 @@ public class OrderServiceImpl implements OrderService{
         orderToUpdate.setId(id);
 
         orderRepository.save(orderToUpdate);
-
+        log.info("Update Service Called");
         return modelMapper.map(orderToUpdate, OrderResponseDTO.class);
     }
 
     @Override
     public void delete(Long id) {
         findById(id);
+        log.info("Delete Service Called");
         orderRepository.deleteById(id);
     }
 
+    public OrderPublisherData createOrderPublisherData(OrderEntity order){
+        var orderData = new OrderPublisherData();
+        orderData.setId(order.getId());
+        orderData.setTotal(order.getTotal());
+        log.info("Create OrderPublisherData Called");
+        return orderData;
+    }
+
     public List<ItemEntity> mapList(OrderRequestDTO request){
+        log.info("List mapped to ItemEntity List");
         return request
                 .getItems()
                 .stream()
@@ -119,19 +139,36 @@ public class OrderServiceImpl implements OrderService{
                 .build();
     }
     
-    public double calculateTotal(List<ItemRequestDTO> items){
-        return items.stream().mapToDouble(ItemRequestDTO::getValue).sum();
+    public double calculateTotal(List<ItemEntity> items){
+        log.info("Calculate Order Total Called");
+        return items.stream().mapToDouble(ItemEntity::getValue).sum();
     }
 
-    public void validateDate(List<ItemRequestDTO> itemList){
-
-        for (ItemRequestDTO item: itemList) {
-            if(!(item.getCreationDate().isBefore(item.getValidationDate()))){
+    public void validateDate(List<ItemEntity> itemList){
+        for (ItemEntity item: itemList) {
+            if((item.getCreationDate().isAfter(item.getValidationDate()))){
+                log.warn("Validate Date Called - Throwed InvalidDateException");
                 throw new InvalidDateException();
             }
         }
+    }
 
+    public void validateNullDate(List<ItemEntity> itemList){
+        for (ItemEntity item: itemList) {
+            if((item.getCreationDate() == null || item.getValidationDate() == null)){
+                log.warn("Validate Date Called - Throwed NullDateException");
+                throw new NullDateException();
+            }
+        }
+    }
 
+    public void validateItemValue(List<ItemEntity> itemList){
+        for (ItemEntity item: itemList){
+            if (item.getValue() <= 0){
+                log.warn("Validate Date Called - Throwed InvalidItemValueException");
+                throw new InvalidItemValueException();
+            }
+        }
     }
 
     public OrderResponseDTO createOrderResponse(OrderEntity order) {
@@ -142,9 +179,9 @@ public class OrderServiceImpl implements OrderService{
         AddressEntity address =
                 addressService.findAddress(requestDTO.getCep());
 
-        address.setComplemento(requestDTO.getComplemento());
+        address.setNumber(requestDTO.getNumber());
         addressRepository.save(address);
-
+        log.info("Create Address Service Called");
         return address;
     }
 

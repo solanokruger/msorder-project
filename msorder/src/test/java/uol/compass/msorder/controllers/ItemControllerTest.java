@@ -1,8 +1,6 @@
 package uol.compass.msorder.controllers;
 
 import org.junit.jupiter.api.Test;
-import org.mockito.Spy;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -11,9 +9,9 @@ import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import uol.compass.msorder.builders.ItemBuilder;
 import uol.compass.msorder.model.dtos.request.ItemRequestDTO;
 import uol.compass.msorder.model.dtos.response.ItemResponseDTO;
-import uol.compass.msorder.model.entities.ItemEntity;
 import uol.compass.msorder.services.ItemServiceImpl;
 import utils.TestUtils;
 
@@ -38,8 +36,8 @@ public class ItemControllerTest {
 
     @Test
     void update() throws Exception {
-        ItemRequestDTO request = new ItemRequestDTO();
-        ItemResponseDTO itemResponseDTO = new ItemResponseDTO();
+        ItemRequestDTO request = ItemBuilder.getItemRequest();
+        ItemResponseDTO itemResponseDTO = ItemBuilder.getItemResponse();
 
         when(itemService.update(any(), any())).thenReturn(itemResponseDTO);
 
@@ -47,7 +45,7 @@ public class ItemControllerTest {
 
         MvcResult result = mvc
                 .perform(MockMvcRequestBuilders.patch(ID_URL)
-                        .accept(javax.ws.rs.core.MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
                         .content(input)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();

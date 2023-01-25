@@ -1,6 +1,8 @@
 package uol.compass.msorder.model.entities;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -8,6 +10,7 @@ import javax.persistence.*;
 
 @Entity(name = "address")
 @Table(name = "address")
+@Builder
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -20,17 +23,25 @@ public class AddressEntity {
     @Column(name = "cep")
     private String cep;
 
+    @Column(name = "number")
+    @JsonProperty("número")
+    private Long number;
+
     @Column(name = "street")
-    private String logradouro;
+    @JsonProperty("logradouro")
+    private String street;
 
     @Column(name = "complement")
-    private String complemento;
+    @JsonProperty("complemento")
+    private String complement;
 
     @Column(name = "district")
-    private String bairro;
+    @JsonProperty("bairro")
+    private String district;
 
     @Column(name = "location")
-    private String localidade;
+    @JsonProperty("localidade")
+    private String location;
 
     @Column(name = "uf")
     private String uf;

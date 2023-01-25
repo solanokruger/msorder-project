@@ -1,14 +1,15 @@
 package uol.compass.msorder.model.dtos.response;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import uol.compass.msorder.model.entities.AddressEntity;
-import uol.compass.msorder.model.entities.ItemEntity;
 
 import java.util.List;
 
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class OrderResponseDTO {

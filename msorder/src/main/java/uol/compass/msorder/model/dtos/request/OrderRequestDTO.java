@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.br.CPF;
+import uol.compass.msorder.model.entities.ItemEntity;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -21,7 +22,7 @@ public class OrderRequestDTO {
     private String cpf;
 
     @NotNull
-    private List<ItemRequestDTO> items;
+    private List<ItemEntity> items;
 
     @NotNull
     private double total;
@@ -29,7 +30,7 @@ public class OrderRequestDTO {
     @NotNull
     private String cep;
 
-    @NotBlank
-    private String complemento;
+    @NotNull
+    private Long number;
 
 }

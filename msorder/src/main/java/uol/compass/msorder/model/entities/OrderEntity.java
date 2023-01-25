@@ -1,6 +1,7 @@
 package uol.compass.msorder.model.entities;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,6 +12,7 @@ import java.util.List;
 @Entity(name = "orders")
 @Table(name = "orders")
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class OrderEntity {
@@ -22,7 +24,7 @@ public class OrderEntity {
     @Column(name = "cpf")
     private String cpf;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "item_id")
     private List<ItemEntity> items;
 

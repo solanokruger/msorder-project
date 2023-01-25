@@ -21,6 +21,6 @@ public class OrderRequestUpdateDTO {
     private String cep;
 
     @NotNull
-    private String complemento;
+    private Long number;
 
 }

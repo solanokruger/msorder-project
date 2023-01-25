@@ -1,5 +1,7 @@
 package uol.compass.msorder.handler;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.mapping.PropertyReferenceException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -15,12 +17,9 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import uol.compass.msorder.constants.ErrorCode;
-import uol.compass.msorder.model.dtos.ExceptionResponse;
-import uol.compass.msorder.model.exceptions.InvalidDateException;
-import uol.compass.msorder.model.exceptions.ItemNotFoundException;
-import uol.compass.msorder.model.exceptions.OrderNotFoundException;
+import uol.compass.msorder.model.dtos.response.ExceptionResponse;
+import uol.compass.msorder.model.exceptions.*;
 
-import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -77,11 +76,6 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exceptionResponse);
     }
 
-//    @ExceptionHandler(DataIntegrityViolationException.class)
-//    protected ResponseEntity<Object> objectAldreadyRegistered(DataIntegrityViolationException ex) {
-//        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
-//    }
-
     @ExceptionHandler(ItemNotFoundException.class)
     public final ResponseEntity<Object> handleItemNotFoundException(ItemNotFoundException ex) {
         ExceptionResponse exceptionResponse = new ExceptionResponse(ErrorCode.ITEM_NOT_FOUND, ex);
@@ -100,12 +94,30 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exceptionResponse);
     }
 
-    @ExceptionHandler(SQLIntegrityConstraintViolationException.class)
-    public final ResponseEntity<Object> handleSQLIntegrityConstraintViolationException(
-            SQLIntegrityConstraintViolationException ex){
+    @ExceptionHandler(NullDateException.class)
+    public final ResponseEntity<Object> handleNullDateException(NullDateException ex) {
+        ExceptionResponse exceptionResponse = new ExceptionResponse(ErrorCode.NULL_DATE_PARAMETER, ex);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exceptionResponse);
+    }
+
+    @ExceptionHandler(InvalidItemValueException.class)
+    public final ResponseEntity<Object> handleInvalidItemValueException(InvalidItemValueException ex) {
+        ExceptionResponse exceptionResponse = new ExceptionResponse(ErrorCode.INVALID_ITEM_VALUE, ex);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exceptionResponse);
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public final ResponseEntity<Object> handleDataIntegrityViolationException(DataIntegrityViolationException ex){
         ExceptionResponse exceptionResponse = new ExceptionResponse(ErrorCode.INVALID_PARAMETER, ex);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exceptionResponse);
     }
+
+    @ExceptionHandler(JsonProcessingException.class)
+    public final ResponseEntity<Object> handleJsonProcessingException(JsonProcessingException ex){
+        ExceptionResponse exceptionResponse = new ExceptionResponse(ErrorCode.JSON_PROCESSING_ERROR, ex);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exceptionResponse);
+    }
+
 
 
 

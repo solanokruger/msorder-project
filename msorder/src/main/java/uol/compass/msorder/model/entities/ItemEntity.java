@@ -1,6 +1,7 @@
 package uol.compass.msorder.model.entities;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -10,6 +11,7 @@ import java.time.LocalDateTime;
 @Entity(name = "item")
 @Table(name = "item")
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class ItemEntity {

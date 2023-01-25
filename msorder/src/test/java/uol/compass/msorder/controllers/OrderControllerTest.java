@@ -1,6 +1,8 @@
 package uol.compass.msorder.controllers;
 
 import org.junit.jupiter.api.Test;
+import org.mockito.Spy;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -10,17 +12,15 @@ import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import uol.compass.msorder.model.dtos.request.ItemRequestDTO;
+import uol.compass.msorder.builders.OrderBuilder;
 import uol.compass.msorder.model.dtos.request.OrderRequestDTO;
+import uol.compass.msorder.model.dtos.request.OrderRequestUpdateDTO;
 import uol.compass.msorder.model.dtos.response.OrderResponseDTO;
 import uol.compass.msorder.model.dtos.response.OrderResponseParameters;
-import uol.compass.msorder.model.entities.ItemEntity;
 import uol.compass.msorder.services.AddressService;
+import uol.compass.msorder.services.ItemServiceImpl;
 import uol.compass.msorder.services.OrderServiceImpl;
 import utils.TestUtils;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -28,6 +28,10 @@ import static org.mockito.Mockito.when;
 
 @WebMvcTest(controllers = OrderController.class)
 public class OrderControllerTest {
+
+
+    @Spy
+    private ModelMapper modelMapper;
 
     @Autowired
     private MockMvc mvc;
@@ -38,14 +42,17 @@ public class OrderControllerTest {
     @MockBean
     private AddressService addressService;
 
+    @MockBean
+    private ItemServiceImpl itemService;
+
     public static final String BASE_URL = "/api/pedidos";
 
     public static final String ID_URL = BASE_URL + "/1";
 
     @Test
     void create() throws Exception{
-        OrderRequestDTO request = getOrderRequestDTO();
-        OrderResponseDTO responseDTO = new OrderResponseDTO();
+        OrderRequestDTO request = OrderBuilder.getOrderRequest();
+        OrderResponseDTO responseDTO = OrderBuilder.getOrderResponse();
 
         when(orderService.create(any())).thenReturn(responseDTO);
 
@@ -61,19 +68,18 @@ public class OrderControllerTest {
         MockHttpServletResponse response = result.getResponse();
 
         assertEquals(HttpStatus.CREATED.value(), response.getStatus());
-
     }
 
     @Test
     void findAll() throws Exception {
-        OrderResponseParameters orderResponseParameters = new OrderResponseParameters();
+        OrderResponseParameters orderResponseParameters = OrderBuilder.getOrderResponseParameters();
 
         when(orderService.findAll(any(), any())).thenReturn(orderResponseParameters);
 
         MvcResult result = mvc
                 .perform(MockMvcRequestBuilders.get(BASE_URL)
-                        .accept(javax.ws.rs.core.MediaType.APPLICATION_JSON)
-                        .contentType(javax.ws.rs.core.MediaType.APPLICATION_JSON))
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
 
         MockHttpServletResponse response = result.getResponse();
@@ -83,14 +89,35 @@ public class OrderControllerTest {
 
     @Test
     void findById() throws Exception {
-        OrderResponseDTO orderResponseDTO = new OrderResponseDTO();
+        OrderResponseDTO orderResponseDTO = OrderBuilder.getOrderResponse();
 
         when(orderService.findById(any())).thenReturn(orderResponseDTO);
 
         MvcResult result = mvc
                 .perform(MockMvcRequestBuilders.get(ID_URL)
-                        .accept(javax.ws.rs.core.MediaType.APPLICATION_JSON)
-                        .contentType(javax.ws.rs.core.MediaType.APPLICATION_JSON))
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
+
+        MockHttpServletResponse response = result.getResponse();
+
+        assertEquals(HttpStatus.OK.value(), response.getStatus());
+    }
+
+    @Test
+    void update() throws Exception{
+        OrderRequestUpdateDTO orderRequestUpdate = OrderBuilder.getOrderRequestUpdateDTO();
+        OrderResponseDTO responseDTO = OrderBuilder.getOrderResponse();
+
+        when(orderService.update(any(), any())).thenReturn(responseDTO);
+
+        String input = TestUtils.mapToJson(orderRequestUpdate);
+
+        MvcResult result = mvc
+                .perform(MockMvcRequestBuilders.put(ID_URL)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .content(input)
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
 
         MockHttpServletResponse response = result.getResponse();
@@ -109,21 +136,6 @@ public class OrderControllerTest {
         MockHttpServletResponse response = result.getResponse();
 
         assertEquals(HttpStatus.NO_CONTENT.value(), response.getStatus());
-    }
-
-
-
-
-    private OrderRequestDTO getOrderRequestDTO() {
-        List<ItemEntity> items;
-
-        return OrderRequestDTO.builder()
-                .cpf("031.090.920-18")
-                .total(55)
-                .items(new ArrayList<ItemRequestDTO>())
-                .cep("98270000")
-                .complemento("123")
-                .build();
     }
 
 

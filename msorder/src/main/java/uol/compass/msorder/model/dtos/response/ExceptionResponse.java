@@ -1,4 +1,4 @@
-package uol.compass.msorder.model.dtos;
+package uol.compass.msorder.model.dtos.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

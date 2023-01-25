@@ -1,15 +1,15 @@
 package uol.compass.msorder.handler;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import uol.compass.msorder.model.exceptions.InvalidDateException;
-import uol.compass.msorder.model.exceptions.ItemNotFoundException;
-import uol.compass.msorder.model.exceptions.OrderNotFoundException;
+import uol.compass.msorder.model.exceptions.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -58,4 +58,27 @@ public class RestExceptionHandlerTest {
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
         assertEquals(ResponseEntity.class, response.getClass());
     }
+
+    @Test
+    void whenHandleNullDateException(){
+        ResponseEntity<Object> response = exceptionHandler
+                .handleNullDateException(new NullDateException());
+
+        assertNotNull(response);
+        assertNotNull(response.getBody());
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertEquals(ResponseEntity.class, response.getClass());
+    }
+
+    @Test
+    void whenHandleInvalidItemValueException (){
+        ResponseEntity<Object> response = exceptionHandler
+                .handleInvalidItemValueException(new InvalidItemValueException());
+
+        assertNotNull(response);
+        assertNotNull(response.getBody());
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertEquals(ResponseEntity.class, response.getClass());
+    }
+
 }

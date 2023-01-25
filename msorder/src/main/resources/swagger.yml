@@ -1,0 +1,364 @@
+openapi: 3.0.3
+info:
+  title: API Microsserviço Order
+  description: |-
+    O Microsserviço Order possui a funcionalidade de
+    gerar pedidos de itens e enviar esses pedidos para um microsserviço
+    de histórico, que possui uma relação de todos os pedidos realizados por data.
+  termsOfService: http://swagger.io/terms/
+  contact:
+    email: solano.kruger.pb@compasso.com.br
+  version: 0.0.1
+servers:
+  - url: http://localhost:8080
+    description: MS-Order Local API
+tags:
+  - name: Order
+    description: Todas as informações dos pedidos.
+  - name: Item
+    description: Todas as informações dos itens.
+paths:
+
+  /api/pedidos:
+
+    post:
+      tags:
+        - Order
+      summary: Cadastrar Pedido
+      description: Cadastra um Pedido
+      operationId: create
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OrderRequestDTO"
+      responses:
+        "201":
+          description: CREATED
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/OrderResponseDTO"
+
+    get:
+      tags:
+        - Order
+      summary: Listar todos os Pedidos.
+      description: Retorna uma lista de Pedidos.
+      operationId: findAll
+      # parameters:
+      #   - name: cpf
+      #     in: path
+      #     description: CPF do Pedido para solicitação.
+      #     required: true
+      #     schema:
+      #       type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/OrderResponseDTO"
+  /api/pedidos/{id}:
+    get:
+      tags:
+        - Order
+      summary: Listar Pedido pelo ID.
+      description: Retorna um Pedido especifico.
+      operationId: findById
+      parameters:
+        - name: id
+          in: path
+          description: Id do Pedido a ser buscado
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/OrderResponseDTO"
+        "404":
+          description: ORDER_NOT_FOUND
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OrderNotFoundException"
+
+    put:
+      tags:
+        - Order
+      summary: Atualizar Pedido pelo ID.
+      description: Atualiza um Pedido especifico.
+      operationId: update
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OrderRequestUpdateDTO"
+      parameters:
+        - name: id
+          in: path
+          description: Id do Pedido a ser atualizado
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/OrderResponseDTO"
+        "404":
+          description: ORDER_NOT_FOUND
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OrderNotFoundException"
+
+    delete:
+      tags:
+        - Order
+      summary: Deleta um Pedido pelo ID.
+      description: Deleta um Pedido especifico.
+      operationId: delete
+      parameters:
+        - name: id
+          in: path
+          description: Id do Pedido a ser deletado
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "204":
+          description: NO_CONTENT
+        "404":
+          description: ORDER_NOT_FOUND
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OrderNotFoundException"
+
+  /api/itens/{id}:
+    patch:
+      tags:
+        - Order
+      summary: Atualiza um Item pelo ID.
+      description: Atualiza um Item especifico.
+      operationId: update (item)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ItemRequestDTO"
+      parameters:
+        - name: id
+          in: path
+          description: Id do Item a ser atualizado
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ItemResponseDTO"
+        "404":
+          description: ITEM_NOT_FOUND
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ItemNotFoundException"
+
+
+components:
+  schemas:
+
+    OrderRequestDTO:
+      type: object
+      properties:
+        cpf:
+          type: string
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/ItemRequestDTO"
+        cep:
+          type: string
+        number:
+          type: integer
+      example:
+        cpf: "011.374.198-73"
+        items:  "#/components/schemas/ItemRequestDTO"
+        cep: "98290000"
+        number: 123
+
+    OrderRequestUpdateDTO:
+      type: object
+      properties:
+        cpf:
+          type: string
+        cep:
+          type: string
+        number:
+          type: integer
+      example:
+        cpf: "011.374.198-73"
+        cep: "98290000"
+        number: 123
+
+    OrderResponseDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        cpf:
+          type: string
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/ItemResponseDTO"
+        total:
+          type: number
+        address:
+          type: object
+      example:
+        id: 1
+        cpf: "011.374.198-73"
+        items: "#/components/schemas/ItemResponseDTO"
+        total: 99.9
+        address: "#/components/schemas/AddressEntity"
+
+
+
+
+    ItemRequestDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        creationDate:
+          type: string
+        validationDate:
+          type: string
+        value:
+          type: number
+        description:
+          type: string
+      example:
+        id: 1
+        name: "Nome do item"
+        creationDate: "2023-01-04T21:00:00"
+        validationDate: "2024-01-04T21:00:00"
+        value: 99.9
+        description: "Descrição do item"
+
+    ItemResponseDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        creationDate:
+          type: string
+        validationDate:
+          type: string
+        value:
+          type: number
+        description:
+          type: string
+      example:
+        id: 1
+        name: "Nome do item"
+        creationDate: "04-01-2023 21:00:00"
+        validationDate: "04-01-2024 21:00:00"
+        value: 99.9
+        description: "Descrição do item"
+
+
+    AddressEntity:
+      type: object
+      properties:
+        cep:
+          type: string
+        number:
+          type: integer
+          format: int64
+        street:
+          type: string
+        complement:
+          type: string
+        district:
+          type: string
+        local:
+          type: string
+        uf:
+          type: string
+      example:
+        cep: "98290000"
+        number: 123
+        street: "Rua do Comércio"
+        district: "Bairro Y"
+        local: "Erechim"
+        uf: "RS"
+
+    OrderNotFoundException:
+      type: object
+      properties:
+        details:
+          type: string
+        errorCode:
+          type: string
+        httpStatus:
+          type: string
+
+    ItemNotFoundException:
+      type: object
+      properties:
+        details:
+          type: string
+        errorCode:
+          type: string
+        httpStatus:
+          type: string
+
+    JsonProcessingException:
+      type: object
+      properties:
+        details:
+          type: string
+        errorCode:
+          type: string
+        httpStatus:
+          type: string
+
+
