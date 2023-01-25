@@ -18,9 +18,7 @@ tags:
   - name: Item
     description: Todas as informações dos itens.
 paths:
-
   /api/pedidos:
-
     post:
       tags:
         - Order
@@ -56,13 +54,13 @@ paths:
       summary: Listar todos os Pedidos.
       description: Retorna uma lista de Pedidos.
       operationId: findAll
-      # parameters:
-      #   - name: cpf
-      #     in: path
-      #     description: CPF do Pedido para solicitação.
-      #     required: false
-      #     schema:
-      #       type: string
+      parameters:
+        - name: cpf
+          in: query
+          description: CPF para solicitação dos Pedidos.
+          required: false
+          schema:
+            type: string
       responses:
         "200":
           description: OK
@@ -74,7 +72,6 @@ paths:
                   $ref: "#/components/schemas/OrderResponseDTO"
 
   /api/pedidos/{id}:
-
     get:
       tags:
         - Order
@@ -104,7 +101,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/OrderNotFoundException"
-
     put:
       tags:
         - Order
@@ -148,7 +144,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/OrderNotFoundException"
-
     delete:
       tags:
         - Order
@@ -174,10 +169,9 @@ paths:
                 $ref: "#/components/schemas/OrderNotFoundException"
 
   /api/itens/{id}:
-
     patch:
       tags:
-        - Order
+        - Item
       summary: Atualiza um Item pelo ID.
       description: Atualiza um Item especifico.
       operationId: update (item)
@@ -218,11 +212,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ItemNotFoundException"
-
-
 components:
   schemas:
-
     OrderRequestDTO:
       type: object
       properties:
@@ -278,9 +269,6 @@ components:
         items: "#/components/schemas/ItemResponseDTO"
         total: 99.9
         address: "#/components/schemas/AddressEntity"
-
-
-
 
     ItemRequestDTO:
       type: object
@@ -376,36 +364,6 @@ components:
         httpStatus:
           type: string
 
-    InvalidDateException:
-      type: object
-      properties:
-        details:
-          type: string
-        errorCode:
-          type: string
-        httpStatus:
-          type: string
-
-    NullDateException:
-      type: object
-      properties:
-        details:
-          type: string
-        errorCode:
-          type: string
-        httpStatus:
-          type: string
-
-    InvalidItemValueException:
-      type: object
-      properties:
-        details:
-          type: string
-        errorCode:
-          type: string
-        httpStatus:
-          type: string
-
     InvalidParameter:
       type: object
       properties:
@@ -425,6 +383,3 @@ components:
           type: string
         httpStatus:
           type: string
-
-
-    
