@@ -17,7 +17,8 @@ Inicializar o RabbitMQ no Docker
 ```
 
 Fila usada para a mensageria:
-    
+![queue](https://user-images.githubusercontent.com/89487480/214903988-c9f5441f-84bb-49d2-abae-cde869bfa237.png)
+
 ## Funcionalidades
 
 - CRUD básico de Pedidos;
@@ -33,6 +34,12 @@ Fila usada para a mensageria:
 
 
 ## Cobertura de Testes
+Pacotes removidos da cobertura de testes:
+![code_coverage_excluded](https://user-images.githubusercontent.com/89487480/214903363-b9564402-6cc6-4600-b671-ff1e7b3bca7c.png)
+
+Cobertura total de Testes
+
+
 ## Documentação da API
 
 #### Criar um Pedido
@@ -118,6 +125,8 @@ O Microsserviço History possui a funcionalidade de listar um histórico de pedi
 - Listagem de todo o Histórico de Pedidos;
 - Filtragem do Histórico por Data.
 ## Cobertura de Testes
+Pacotes removidos da cobertura de testes:
+![excluded_from_mshistory](https://user-images.githubusercontent.com/89487480/214904443-1b12d5c4-9711-44f1-87f3-3174bf486d2d.png)
 
 ## Documentação da API
 #### Listar todo o Histórico
