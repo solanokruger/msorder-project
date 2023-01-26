@@ -25,7 +25,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"cpf\": \"630.641.108-96\",\r\n    \"items\": [\r\n        {\r\n            \"name\": \"Ventilador\",\r\n            \"creationDate\": \"2023-01-04T21:00:00\",\r\n            \"validationDate\": \"2024-01-04T21:00:00\",\r\n            \"value\": 130,\r\n            \"description\": \"Ventilador 5 hélices\"\r\n        },\r\n        {\r\n            \"name\": \"Cadeira escritório\",\r\n            \"creationDate\": \"2023-01-04T21:00:00\",\r\n            \"validationDate\": \"2024-01-04T21:00:00\",\r\n            \"value\": 250,\r\n            \"description\": \"Cadeira escritório com ajuste de altura\"\r\n        }\r\n    ],\r\n    \"cep\": 98700000,\r\n    \"number\": 123\r\n}"
+							"raw": "{\r\n    \"cpf\": \"630.641.108-96\",\r\n    \"items\": [\r\n        {\r\n            \"name\": \"Ventilador\",\r\n            \"creationDate\": \"2023-01-04T21:00:00\",\r\n            \"validationDate\": \"2024-01-04T21:00:00\",\r\n            \"value\": 130,\r\n            \"description\": \"Ventilador 5 hélices\"\r\n        },\r\n        {\r\n            \"name\": \"Cadeira escritório\",\r\n            \"creationDate\": \"2023-01-04T21:00:00\",\r\n            \"validationDate\": \"2024-01-04T21:00:00\",\r\n            \"value\": 250,\r\n            \"description\": \"Cadeira de escritório com ajuste de altura\"\r\n        }\r\n    ],\r\n    \"cep\": \"01001000\",\r\n    \"number\": 123\r\n}"
 						},
 						"url": {
 							"raw": "http://localhost:8080/api/pedidos",
@@ -113,7 +113,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"cpf\": \"508.087.635-20\",\r\n    \"cep\": 98290000,\r\n    \"number\": 255\r\n}"
+							"raw": "{\r\n    \"cpf\": \"508.087.635-20\",\r\n    \"cep\": \"98290000\",\r\n    \"number\": 255\r\n}"
 						},
 						"url": {
 							"raw": "http://localhost:8080/api/pedidos/1",
