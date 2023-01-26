@@ -1,0 +1,42 @@
+{
+	"info": {
+		"_postman_id": "53095478-7c64-4adf-b1cc-e7adfce3fabd",
+		"name": "MS History",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "24318339"
+	},
+	"item": [
+		{
+			"name": "findAll",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8090/api/historico",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8090",
+					"path": [
+						"api",
+						"historico"
+					],
+					"query": [
+						{
+							"key": "startDate",
+							"value": "17-01-2023 13:30:00",
+							"disabled": true
+						},
+						{
+							"key": "endDate",
+							"value": "19-01-2023 13:30:00",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

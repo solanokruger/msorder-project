@@ -1,4 +1,10 @@
 spring:
+  jackson:
+    parser:
+      allow-numeric-leading-zeros: true
+  http:
+    converters:
+      preferred-json-mapper: jackson
   sql:
     init:
       mode: always

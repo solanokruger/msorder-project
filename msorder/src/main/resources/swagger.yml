@@ -364,6 +364,36 @@ components:
         httpStatus:
           type: string
 
+    InvalidDateException:
+      type: object
+      properties:
+        details:
+          type: string
+        errorCode:
+          type: string
+        httpStatus:
+          type: string
+
+    NullDateException:
+      type: object
+      properties:
+        details:
+          type: string
+        errorCode:
+          type: string
+        httpStatus:
+          type: string
+
+    InvalidItemValueException:
+      type: object
+      properties:
+        details:
+          type: string
+        errorCode:
+          type: string
+        httpStatus:
+          type: string
+
     InvalidParameter:
       type: object
       properties:
@@ -383,3 +413,5 @@ components:
           type: string
         httpStatus:
           type: string
+
+

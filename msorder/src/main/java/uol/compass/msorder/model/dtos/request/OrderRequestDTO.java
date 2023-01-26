@@ -1,5 +1,7 @@
 package uol.compass.msorder.model.dtos.request;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -9,6 +11,7 @@ import uol.compass.msorder.model.entities.ItemEntity;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.util.List;
 
 @Builder
@@ -27,7 +30,8 @@ public class OrderRequestDTO {
     @NotNull
     private double total;
 
-    @NotNull
+    @NotBlank
+    @Pattern(regexp = "(\\d{8})")
     private String cep;
 
     @NotNull

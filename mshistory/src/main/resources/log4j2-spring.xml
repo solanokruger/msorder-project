@@ -4,7 +4,7 @@
         <Console name="LogToConsole" target="SYSTEM_OUT">
             <EcsLayout serviceName="ms-order"/>
         </Console>
-        <File name="LogToFile" fileName="logs/ms-order.log">
+        <File name="LogToFile" fileName="logs/ms-history.log">
             <EcsLayout serviceName="ms-order"/>
         </File>
     </Appenders>

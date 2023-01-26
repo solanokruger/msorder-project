@@ -156,7 +156,7 @@ public class OrderServiceImpl implements OrderService{
     public void validateNullDate(List<ItemEntity> itemList){
         for (ItemEntity item: itemList) {
             if((item.getCreationDate() == null || item.getValidationDate() == null)){
-                log.warn("Validate Date Called - Throwed NullDateException");
+                log.warn("Validate Null Date Called - Throwed NullDateException");
                 throw new NullDateException();
             }
         }
@@ -165,7 +165,7 @@ public class OrderServiceImpl implements OrderService{
     public void validateItemValue(List<ItemEntity> itemList){
         for (ItemEntity item: itemList){
             if (item.getValue() <= 0){
-                log.warn("Validate Date Called - Throwed InvalidItemValueException");
+                log.warn("Validate Item Value Called - Throwed InvalidItemValueException");
                 throw new InvalidItemValueException();
             }
         }

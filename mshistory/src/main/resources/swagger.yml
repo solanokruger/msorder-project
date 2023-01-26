@@ -71,13 +71,3 @@ components:
       example:
         id: 1
         total: 99.9
-
-    JsonProcessingException:
-      type: object
-      properties:
-        details:
-          type: string
-        errorCode:
-          type: string
-        httpStatus:
-          type: string

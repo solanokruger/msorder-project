@@ -1,0 +1,196 @@
+{
+	"info": {
+		"_postman_id": "c696f36c-3038-436d-8df4-947560044e4d",
+		"name": "MS Order",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "24318339"
+	},
+	"item": [
+		{
+			"name": "Order",
+			"item": [
+				{
+					"name": "create",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"cpf\": \"630.641.108-96\",\r\n    \"items\": [\r\n        {\r\n            \"name\": \"Ventilador\",\r\n            \"creationDate\": \"2023-01-04T21:00:00\",\r\n            \"validationDate\": \"2024-01-04T21:00:00\",\r\n            \"value\": 130,\r\n            \"description\": \"Ventilador 5 hélices\"\r\n        },\r\n        {\r\n            \"name\": \"Cadeira escritório\",\r\n            \"creationDate\": \"2023-01-04T21:00:00\",\r\n            \"validationDate\": \"2024-01-04T21:00:00\",\r\n            \"value\": 250,\r\n            \"description\": \"Cadeira escritório com ajuste de altura\"\r\n        }\r\n    ],\r\n    \"cep\": 98700000,\r\n    \"number\": 123\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/pedidos",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"pedidos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "findAll",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/pedidos",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"pedidos"
+							],
+							"query": [
+								{
+									"key": "sort",
+									"value": "total,desc",
+									"disabled": true
+								},
+								{
+									"key": "sort",
+									"value": "total,asc",
+									"disabled": true
+								},
+								{
+									"key": "cpf",
+									"value": "630.641.108-96",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "findById",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/pedidos/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"pedidos",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"cpf\": \"508.087.635-20\",\r\n    \"cep\": 98290000,\r\n    \"number\": 255\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/pedidos/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"pedidos",
+								"1"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateItem",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Climatizador\",\r\n    \"creationDate\": \"2023-03-04T21:00:00\",\r\n    \"validationDate\": \"2024-01-04T21:00:00\",\r\n    \"value\": 1900,\r\n    \"description\": \"Climatizador Frio/Quente\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/itens/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"itens",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteOrder",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/pedidos/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"pedidos",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

@@ -65,14 +65,14 @@ public class ItemServiceImpl implements ItemService{
 
     public void validateNullDate(ItemRequestDTO requestDTO){
         if((requestDTO.getCreationDate() == null || requestDTO.getValidationDate() == null)){
-            log.warn("Validate Date Called - Throwed NullDateException");
+            log.warn("Validate Null Date Called - Throwed NullDateException");
             throw new NullDateException();
         }
     }
 
     public void validateItemValue(ItemRequestDTO requestDTO){
         if (requestDTO.getValue() <= 0){
-            log.warn("Validate Date Called - Throwed InvalidItemValueException");
+            log.warn("Validate Item Value Called - Throwed InvalidItemValueException");
             throw new InvalidItemValueException();
         }
     }
