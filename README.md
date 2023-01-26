@@ -127,8 +127,10 @@ O Microsserviço History possui a funcionalidade de listar um histórico de pedi
 ## Funcionalidades
 - Listagem de todo o Histórico de Pedidos;
 - Filtragem do Histórico por Data.
+
 ## Cobertura de Testes
-####Pacotes removidos da cobertura de testes:
+
+#### Pacotes removidos da cobertura de testes:
 
 ![excluded_from_mshistory](https://user-images.githubusercontent.com/89487480/214904443-1b12d5c4-9711-44f1-87f3-3174bf486d2d.png)
 
