@@ -8,6 +8,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import uol.compass.msorder.model.dtos.request.OrderRequestDTO;
 import uol.compass.msorder.model.dtos.request.OrderRequestUpdateDTO;
@@ -28,6 +29,7 @@ public class OrderController {
     private final OrderServiceImpl orderService;
 
     @PostMapping
+    @Transactional
     public ResponseEntity<OrderResponseDTO> create(@Valid @RequestBody OrderRequestDTO requestDTO) throws JsonProcessingException {
         OrderResponseDTO orderResponseDTO = orderService.create(requestDTO);
         log.info("Order Created");
@@ -52,6 +54,7 @@ public class OrderController {
     }
 
     @PutMapping("/{id}")
+    @Transactional
     public ResponseEntity<OrderResponseDTO> update(@PathVariable Long id,
                                                    @RequestBody @Valid OrderRequestUpdateDTO request) {
         OrderResponseDTO responseDTO = orderService.update(id, request);
@@ -60,6 +63,7 @@ public class OrderController {
     }
 
     @DeleteMapping("/{id}")
+    @Transactional
     public ResponseEntity<OrderResponseDTO> delete(@PathVariable("id") Long id){
         orderService.delete(id);
         log.info("Order Deleted");
