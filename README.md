@@ -12,12 +12,23 @@ O Microsserviço Order possui a funcionalidade de gerar pedidos de itens e envia
 
 Inicializar o RabbitMQ no Docker
 
+
+
 ```bash
   docker-compose -f docker-compose.yml up
 ```
 
-Fila usada para a mensageria:
-    
+Acesso ao RabbitMQ:
+
+http://localhost:15672/#/queues
+
+User: admin
+Password: admin
+
+#### Fila criada para a mensageria:
+
+![queue](https://user-images.githubusercontent.com/89487480/214903988-c9f5441f-84bb-49d2-abae-cde869bfa237.png)
+
 ## Funcionalidades
 
 - CRUD básico de Pedidos;
@@ -33,6 +44,14 @@ Fila usada para a mensageria:
 
 
 ## Cobertura de Testes
+#### Pacotes removidos da cobertura de testes:
+
+![code_coverage_excluded](https://user-images.githubusercontent.com/89487480/214903363-b9564402-6cc6-4600-b671-ff1e7b3bca7c.png)
+
+#### Cobertura total de Testes
+
+![code_coverage_msorder](https://user-images.githubusercontent.com/89487480/215087407-7238aa6e-1c7a-4055-bcb2-93e9998392e0.png)
+
 ## Documentação da API
 
 #### Criar um Pedido
@@ -117,7 +136,16 @@ O Microsserviço History possui a funcionalidade de listar um histórico de pedi
 ## Funcionalidades
 - Listagem de todo o Histórico de Pedidos;
 - Filtragem do Histórico por Data.
+
 ## Cobertura de Testes
+
+#### Pacotes removidos da cobertura de testes:
+
+![excluded_from_mshistory](https://user-images.githubusercontent.com/89487480/214904443-1b12d5c4-9711-44f1-87f3-3174bf486d2d.png)
+
+#### Cobertura total de Testes
+
+![code_coverage_mshistory](https://user-images.githubusercontent.com/89487480/215087605-801ddfce-be31-4541-9199-746a62fc91a1.png)
 
 ## Documentação da API
 #### Listar todo o Histórico
