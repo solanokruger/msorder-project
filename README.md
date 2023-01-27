@@ -12,12 +12,17 @@ O Microsserviço Order possui a funcionalidade de gerar pedidos de itens e envia
 
 Inicializar o RabbitMQ no Docker
 
+Acessar filas pelo endereço
+
+http://localhost:15672/#/queues
+
+Usuário e senha padrão: admin
+
 ```bash
   docker-compose -f docker-compose.yml up
 ```
 
-#### Fila usada para a mensageria:
-
+#### Fila criada para a mensageria:
 
 ![queue](https://user-images.githubusercontent.com/89487480/214903988-c9f5441f-84bb-49d2-abae-cde869bfa237.png)
 
@@ -42,6 +47,7 @@ Inicializar o RabbitMQ no Docker
 
 #### Cobertura total de Testes
 
+![code_coverage_msorder](https://user-images.githubusercontent.com/89487480/215087407-7238aa6e-1c7a-4055-bcb2-93e9998392e0.png)
 
 ## Documentação da API
 
@@ -133,6 +139,10 @@ O Microsserviço History possui a funcionalidade de listar um histórico de pedi
 #### Pacotes removidos da cobertura de testes:
 
 ![excluded_from_mshistory](https://user-images.githubusercontent.com/89487480/214904443-1b12d5c4-9711-44f1-87f3-3174bf486d2d.png)
+
+#### Cobertura total de Testes
+
+![code_coverage_mshistory](https://user-images.githubusercontent.com/89487480/215087605-801ddfce-be31-4541-9199-746a62fc91a1.png)
 
 ## Documentação da API
 #### Listar todo o Histórico
