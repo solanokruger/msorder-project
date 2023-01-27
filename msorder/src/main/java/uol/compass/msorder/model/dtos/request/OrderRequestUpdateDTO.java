@@ -16,11 +16,11 @@ import javax.validation.constraints.Pattern;
 @NoArgsConstructor
 public class OrderRequestUpdateDTO {
 
-    @CPF
+    @CPF(message = "CPF inválido")
     private String cpf;
 
     @NotBlank
-    @Pattern(regexp = "(\\d{8})")
+    @Pattern(regexp = "(\\d{8})", message = "Parâmetro inválido, informe apenas 8 números!")
     private String cep;
 
     @NotNull

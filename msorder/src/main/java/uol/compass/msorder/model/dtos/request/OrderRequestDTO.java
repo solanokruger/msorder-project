@@ -1,7 +1,5 @@
 package uol.compass.msorder.model.dtos.request;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -31,7 +29,7 @@ public class OrderRequestDTO {
     private double total;
 
     @NotBlank
-    @Pattern(regexp = "(\\d{8})")
+    @Pattern(regexp = "(\\d{8})", message = "Parâmetro inválido, informe apenas 8 números!")
     private String cep;
 
     @NotNull
