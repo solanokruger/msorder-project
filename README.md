@@ -12,15 +12,18 @@ O Microsserviço Order possui a funcionalidade de gerar pedidos de itens e envia
 
 Inicializar o RabbitMQ no Docker
 
-Acessar filas pelo endereço
 
-http://localhost:15672/#/queues
-
-Usuário e senha padrão: admin
 
 ```bash
   docker-compose -f docker-compose.yml up
 ```
+
+Acesso ao RabbitMQ:
+
+http://localhost:15672/#/queues
+
+User: admin
+Password: admin
 
 #### Fila criada para a mensageria:
 
